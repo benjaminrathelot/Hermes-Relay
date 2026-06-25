@@ -2,12 +2,30 @@
 
 Hermes Relay is an offline-first, crisis-resilient messaging protocol and portable C implementation for very short end-to-end encrypted messages that can move across degraded environments without relying on central infrastructure.
 
+Its purpose is simple:
+
+- a sender creates an encrypted message for one recipient
+- that message can pass through several relays
+- those relays can exchange traffic over LAN, local Wi-Fi, partial Internet links, file import/export, or physical transport of a device
+- the recipient does not need to be online when the message is created
+- delivery may happen minutes, hours, or days later
+
+The core idea is not instant messaging. The core idea is delayed but resilient communication in hostile or degraded conditions.
+
 > Public repo, source available, non-commercial.
 > This repository is licensed for non-commercial use only under PolyForm Noncommercial 1.0.0.
 
 ## Why Hermes Relay Exists
 
 Hermes Relay is designed for the case where ordinary communication infrastructure is degraded, intermittent, locally available only in parts, or absent entirely.
+
+Typical scenarios include:
+
+- war or occupation environments
+- severe weather events
+- large-scale infrastructure outages
+- isolated shelters or field teams
+- geographically split zones where some areas still have Internet and others do not
 
 It is built around a narrow, deliberate model:
 
@@ -22,7 +40,37 @@ It is built around a narrow, deliberate model:
 - no guaranteed delivery
 - store-carry-forward propagation
 
-The goal is not rich messaging. The goal is to preserve basic human communication under stress.
+The goal is not rich messaging. The goal is to preserve basic human communication under stress, even when the path between sender and recipient is indirect and slow.
+
+## How Hermes Relay Works
+
+Hermes Relay uses store-carry-forward propagation.
+
+That means a message does not need one continuous live network path from sender to recipient. Instead:
+
+1. a sender creates one encrypted envelope for one recipient
+2. a local client or relay stores that envelope
+3. when another relay, device, or workstation becomes reachable, it can transfer the envelope
+4. that next node stores it and later forwards it again
+5. eventually the envelope reaches a device that can decrypt it for the intended recipient
+
+The transfer step can happen in several ways:
+
+- direct LAN sync
+- local Wi-Fi or hotspot sync
+- relay-to-relay sync over Internet where available
+- file import and export
+- USB transfer
+- physical transport of a laptop, phone, relay box, or storage device acting as the messenger
+
+This is why Hermes Relay remains useful even if:
+
+- there is no Internet at all
+- only some geographic areas have Internet
+- the sender and recipient never overlap online at the same time
+- the message has to cross several disconnected islands before arrival
+
+In practical terms, Hermes Relay is meant to let communities build a communication fabric out of whatever links still exist.
 
 ## What This Repository Contains
 
@@ -40,6 +88,14 @@ This repository includes:
 - a simulator for propagation and pressure scenarios
 - unit tests and a fuzz harness
 - CMake and direct build scripts
+
+Today, operators can use the protocol through:
+
+- the CLI
+- the integrated relay service
+- the desktop shell
+
+The next major goal is mobile integration so that small devices can carry, store, and relay large numbers of short encrypted messages in the same network model.
 
 ## Design Principles
 
@@ -74,6 +130,7 @@ This repository includes:
 - heartbeat status file
 - import and export directories for file handoff
 - periodic sync and cleanup loops
+- designed for multi-hop relay chains rather than single-hop delivery assumptions
 
 ### Desktop Layer
 
@@ -82,6 +139,18 @@ This repository includes:
 - local-only desktop shell over `127.0.0.1`
 - identity, contact, compose, inbox/store, bundle, and relay controls
 - best-effort LAN/Internet/offline posture hints for operators
+
+Current operator workflow:
+
+- set up one or more relays
+- create and carry traffic through the desktop application and relay nodes
+- move bundles or let relays sync whenever contact becomes possible
+
+Planned next workflow:
+
+- mobile applications that participate in the same protocol
+- phones and other small devices acting as message carriers and relays
+- more practical field use without requiring a laptop at every hop
 
 ## Architecture
 
@@ -227,6 +296,7 @@ Hermes Relay is meant to degrade gracefully across:
 - Raspberry Pi and small relay boxes
 - USB and file transfer
 - partial Internet bridging where available
+- physically carried devices that move messages between disconnected places
 
 Future transport work can target Bluetooth, Wi-Fi Direct, LoRa, QR chunking, OpenWRT routers, and mobile-specific platform adapters without changing the protocol core.
 
@@ -262,6 +332,8 @@ What is intentionally still separate or later work:
 - Bluetooth and QR transports
 - aggressive Wi-Fi roaming logic
 - broader interoperability testing across independently written implementations
+
+Mobile integration is a major next step. The long-term intent is that phones and other small devices will not only read and create messages, but also carry and relay them across damaged or fragmented networks with the same protocol.
 
 ## Ownership
 
