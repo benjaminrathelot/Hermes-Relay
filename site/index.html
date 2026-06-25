@@ -9,10 +9,10 @@
   <meta property="og:description" content="Communication when networks fail. Offline-first, relay-driven, crisis-resilient messaging.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://benjaminrathelot.github.io/Hermes-Relay/">
-  <meta name="theme-color" content="#0b1220">
+  <meta name="theme-color" content="#0a1418">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -39,15 +39,15 @@
         <div class="hero-copy">
           <div class="eyebrow">
             <span class="pulse-dot"></span>
-            Communication when networks fail
+            Field communication continuity
           </div>
-          <h1>Short encrypted messages that can survive a broken world.</h1>
+          <h1>Encrypted communication for when networks fracture, disappear, or become dangerous to trust.</h1>
           <p class="hero-lead">
             Hermes Relay is an offline-first messaging protocol designed for war zones, weather disasters, infrastructure collapse,
             and fractured regions where some places still have connectivity and others have none.
           </p>
           <p class="hero-body">
-            One sender. One recipient. No central server required. A message can cross several relays through LAN, Wi-Fi, partial Internet
+            One sender. One recipient. One encrypted envelope. No central server required. A message can cross several relays through LAN, Wi-Fi, partial Internet
             bridges, file import/export, or the physical movement of a laptop, phone, relay box, or storage device carrying encrypted envelopes
             until the recipient eventually receives them.
           </p>
@@ -65,8 +65,10 @@
 
         <div class="hero-visual">
           <div class="visual-frame">
+            <div class="status-ribbon">Operational relay picture</div>
             <div class="signal-layer signal-layer-a"></div>
             <div class="signal-layer signal-layer-b"></div>
+            <div class="tactical-grid"></div>
             <div class="mesh">
               <span class="mesh-node node-a"></span>
               <span class="mesh-node node-b"></span>
@@ -79,6 +81,20 @@
               <span class="mesh-line line-de"></span>
               <span class="mesh-packet packet-1"></span>
               <span class="mesh-packet packet-2"></span>
+            </div>
+            <div class="ops-strip">
+              <div class="ops-item">
+                <strong>Zone Alpha</strong>
+                <span>LAN relay active</span>
+              </div>
+              <div class="ops-item">
+                <strong>Zone Bravo</strong>
+                <span>Carrier handoff pending</span>
+              </div>
+              <div class="ops-item">
+                <strong>Zone Delta</strong>
+                <span>Internet bridge intermittent</span>
+              </div>
             </div>
             <div class="visual-cards">
               <article class="mini-card">
@@ -119,10 +135,55 @@
         </article>
       </section>
 
+      <section class="section user-section">
+        <div class="section-heading">
+          <span class="eyebrow">What The User Actually Does</span>
+          <h2>For the end user, this should feel simpler than the network behind it.</h2>
+          <p>
+            The user should not have to route traffic manually. They create an identity, add contacts, write a short message, and read messages
+            that arrive for them. The relay layer is responsible for the spider work in the background.
+          </p>
+        </div>
+
+        <div class="user-grid">
+          <article class="user-card">
+            <span class="mini-label">Identity</span>
+            <h3>Each participant has a public/private key pair.</h3>
+            <p>
+              Every message is created by one sender identity and encrypted for one recipient identity. Hermes Relay is not group chat, not
+              broadcast social posting, and not a public feed.
+            </p>
+          </article>
+          <article class="user-card">
+            <span class="mini-label">Message model</span>
+            <h3>One message. One sender. One recipient.</h3>
+            <p>
+              The protocol keeps the unit of communication narrow and auditable. A user writes a short text and addresses it to a single contact.
+            </p>
+          </article>
+          <article class="user-card">
+            <span class="mini-label">Relay behavior</span>
+            <h3>The relay is the opportunistic operator.</h3>
+            <p>
+              Relays discover contact opportunities, exchange inventories, request missing envelopes, deduplicate traffic, store what is valid,
+              and keep diffusing messages without asking the user to micromanage each hop.
+            </p>
+          </article>
+          <article class="user-card">
+            <span class="mini-label">Practical effect</span>
+            <h3>The user carries messages by using the system, not by understanding routing.</h3>
+            <p>
+              As future mobile apps arrive, even small devices will be able to carry and relay large numbers of short encrypted messages while
+              the end user focuses on communication, not network topology.
+            </p>
+          </article>
+        </div>
+      </section>
+
       <section class="section" id="flow">
         <div class="section-heading">
           <span class="eyebrow">How It Works</span>
-          <h2>One encrypted envelope. Several possible hops.</h2>
+          <h2>One encrypted envelope. Several possible hops. Intelligent relay behavior in between.</h2>
           <p>
             The protocol does not need one continuous network path from origin to destination. It only needs enough intermittent contact
             for relays and devices to exchange opaque envelopes over time.
@@ -142,16 +203,21 @@
           </article>
           <article class="flow-step">
             <span class="step-number">03</span>
-            <h3>Carry</h3>
-            <p>Whenever a new contact becomes possible, the envelope can move over LAN, Wi-Fi, Internet relay, or file handoff.</p>
+            <h3>Diffuse</h3>
+            <p>The relay does the opportunistic work: inventory exchange, missing-envelope requests, validation, storage, and onward propagation.</p>
           </article>
           <article class="flow-step">
             <span class="step-number">04</span>
+            <h3>Carry</h3>
+            <p>Whenever new contact becomes possible, the envelope can move over LAN, Wi-Fi, Internet relay, file handoff, or a physically carried device.</p>
+          </article>
+          <article class="flow-step">
+            <span class="step-number">05</span>
             <h3>Relay Again</h3>
             <p>The next node stores it, deduplicates it, and later forwards it onward. The process repeats until it reaches the recipient side.</p>
           </article>
           <article class="flow-step">
-            <span class="step-number">05</span>
+            <span class="step-number">06</span>
             <h3>Deliver</h3>
             <p>The intended recipient decrypts the envelope locally. The sender and recipient never need to be online together.</p>
           </article>
@@ -230,7 +296,7 @@
             <article class="network-card">
               <span class="network-type">Live contact</span>
               <h3>LAN, Wi-Fi, hotspot, bridge relay</h3>
-              <p>Two relays or clients meet, exchange inventories, request what is missing, verify envelopes, and keep going.</p>
+              <p>Two relays or clients meet, exchange inventories, request what is missing, verify envelopes, and keep diffusing traffic automatically.</p>
             </article>
             <article class="network-card">
               <span class="network-type">Deferred contact</span>
@@ -288,7 +354,7 @@
         <div class="project-grid">
           <div class="project-copy">
             <span class="eyebrow">Project Scope</span>
-            <h2>Protocol first. Real tools second. Mobile field use next.</h2>
+            <h2>Protocol first. Smart relay behavior next. Mobile field use after that.</h2>
             <p>
               The repository already includes a serious V1 protocol baseline: canonical envelopes, crypto, relay runtime, CLI, simulator,
               Python wrapper, and a local desktop control surface.
@@ -324,7 +390,8 @@
             <span class="eyebrow">Explore The Project</span>
             <h2>Read the spec. Run the relay. Build the next layer.</h2>
             <p>
-              Hermes Relay is designed to be auditable, portable, and implementable by independent developers across platforms.
+              Hermes Relay is designed to be auditable, portable, and implementable by independent developers across platforms, while giving the
+              end user a simple communication experience on top of a much more capable relay fabric.
             </p>
           </div>
           <div class="cta-actions">

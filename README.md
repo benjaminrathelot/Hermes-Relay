@@ -15,6 +15,10 @@ The core idea is not instant messaging. The core idea is delayed but resilient c
 > Public repo, source available, non-commercial.
 > This repository is licensed for non-commercial use only under PolyForm Noncommercial 1.0.0.
 
+Project landing page:
+
+- [Hermes Relay GitHub Pages site](https://benjaminrathelot.github.io/Hermes-Relay/)
+
 ## Why Hermes Relay Exists
 
 Hermes Relay is designed for the case where ordinary communication infrastructure is degraded, intermittent, locally available only in parts, or absent entirely.
@@ -72,6 +76,38 @@ This is why Hermes Relay remains useful even if:
 
 In practical terms, Hermes Relay is meant to let communities build a communication fabric out of whatever links still exist.
 
+## User Model
+
+The intended end-user experience is simpler than the network behavior underneath it.
+
+For the user:
+
+- create an identity with a public/private key pair
+- add contacts
+- write a short message to one recipient
+- receive and read messages addressed to that identity
+
+For the relay layer:
+
+- discover contact opportunities
+- exchange inventories
+- request missing envelopes
+- verify signatures and proof of work
+- deduplicate traffic
+- store valid messages
+- continue diffusing them opportunistically
+
+In other words, the user should communicate. The relays should do the spider work.
+
+Hermes Relay V1 keeps the communication model intentionally narrow:
+
+- one message
+- one sender
+- one recipient
+- one recipient public key target
+
+That narrow model is part of what makes the protocol easier to audit, relay, and implement across difficult environments.
+
 ## What This Repository Contains
 
 This repository includes:
@@ -95,7 +131,7 @@ Today, operators can use the protocol through:
 - the integrated relay service
 - the desktop shell
 
-The next major goal is mobile integration so that small devices can carry, store, and relay large numbers of short encrypted messages in the same network model.
+The next major goal is mobile integration so that small devices can carry, store, and relay large numbers of short encrypted messages in the same network model with less operator effort.
 
 ## Design Principles
 
@@ -145,6 +181,7 @@ Current operator workflow:
 - set up one or more relays
 - create and carry traffic through the desktop application and relay nodes
 - move bundles or let relays sync whenever contact becomes possible
+- rely on the relay layer to continue spreading valid traffic without manual per-hop routing decisions
 
 Planned next workflow:
 
