@@ -2,6 +2,10 @@
 
 Hermes Relay is an offline-first, crisis-resilient messaging protocol and portable C implementation for very short end-to-end encrypted messages that can move across degraded environments without relying on central infrastructure.
 
+Landing page:
+
+- [Hermes Relay project site](https://benjaminrathelot.github.io/Hermes-Relay/)
+
 Its purpose is simple:
 
 - a sender creates an encrypted message for one recipient

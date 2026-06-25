@@ -495,6 +495,27 @@ p {
   margin-bottom: 10px;
 }
 
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.faq-card {
+  padding: 22px;
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(14, 24, 25, 0.92), rgba(8, 15, 16, 0.94)),
+    radial-gradient(circle at top right, rgba(216, 167, 93, 0.08), transparent 36%);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.faq-card h3 {
+  margin-bottom: 10px;
+}
+
 .section {
   margin-top: 92px;
 }
@@ -769,6 +790,7 @@ p {
 
   .ops-strip,
   .user-grid,
+  .faq-grid,
   .flow-grid,
   .timeline,
   .scenario-strip {
@@ -798,6 +820,7 @@ p {
   .visual-cards,
   .ops-strip,
   .user-grid,
+  .faq-grid,
   .flow-grid,
   .timeline,
   .scenario-strip,

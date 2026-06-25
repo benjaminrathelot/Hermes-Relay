@@ -1,0 +1,16 @@
+{
+  "name": "Hermes Relay",
+  "short_name": "Hermes Relay",
+  "description": "Offline-first messaging protocol for crisis communication and smart relay diffusion.",
+  "start_url": "/Hermes-Relay/",
+  "display": "standalone",
+  "background_color": "#0a1418",
+  "theme_color": "#0a1418",
+  "icons": [
+    {
+      "src": "/Hermes-Relay/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
