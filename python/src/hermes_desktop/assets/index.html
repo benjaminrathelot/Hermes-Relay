@@ -1,0 +1,1205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hermes Relay Desktop</title>
+  <style>
+    :root {
+      --bg: #efe8dc;
+      --bg-deep: #e3d7c2;
+      --card: rgba(255, 251, 245, 0.92);
+      --card-strong: #fffdf8;
+      --ink: #182125;
+      --muted: #5d6569;
+      --line: rgba(73, 74, 63, 0.18);
+      --accent: #0f5f58;
+      --accent-soft: #dbece9;
+      --alert: #9b5f0b;
+      --alert-soft: #f6e7d0;
+      --danger: #8b2e2e;
+      --danger-soft: #f7dede;
+      --shadow: 0 24px 48px rgba(27, 24, 18, 0.12);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Avenir Next", "Trebuchet MS", "Gill Sans", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(15, 95, 88, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(155, 95, 11, 0.10), transparent 24%),
+        linear-gradient(180deg, #f8f3ea 0%, var(--bg) 52%, var(--bg-deep) 100%);
+      min-height: 100vh;
+    }
+
+    .shell {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 28px 18px 64px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.84), rgba(255,248,239,0.94)),
+        linear-gradient(120deg, rgba(15,95,88,0.07), rgba(155,95,11,0.05));
+      border: 1px solid rgba(73, 74, 63, 0.16);
+      border-radius: 30px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      top: -80px;
+      width: 240px;
+      height: 240px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(15,95,88,0.16), transparent 68%);
+    }
+
+    .hero-grid {
+      position: relative;
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1.4fr 1fr;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(15, 95, 88, 0.10);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+      line-height: 1.08;
+    }
+
+    h1 {
+      margin-top: 14px;
+      font-size: clamp(2.2rem, 3vw, 3.7rem);
+      max-width: 12ch;
+    }
+
+    h2 {
+      font-size: 1.55rem;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .hero-copy p {
+      max-width: 68ch;
+      margin-top: 14px;
+    }
+
+    .hero-actions,
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(73, 74, 63, 0.14);
+      border-radius: 18px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .stat .label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      margin-bottom: 8px;
+    }
+
+    .stat .value {
+      font-size: 1.65rem;
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .column {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 36px rgba(26, 25, 20, 0.08);
+      padding: 20px;
+      backdrop-filter: blur(12px);
+    }
+
+    .card.tight {
+      padding: 16px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .card-header p {
+      max-width: 55ch;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .badge.ok {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .badge.warn {
+      color: var(--alert);
+      background: var(--alert-soft);
+    }
+
+    .badge.offline {
+      color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .meta {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(73, 74, 63, 0.12);
+    }
+
+    .meta strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .split {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(73, 74, 63, 0.18);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 11px 12px;
+      font: inherit;
+      color: var(--ink);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: rgba(15, 95, 88, 0.48);
+      box-shadow: 0 0 0 4px rgba(15, 95, 88, 0.10);
+      transform: translateY(-1px);
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      padding: 11px 15px;
+      background: linear-gradient(135deg, #0f5f58, #17413d);
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+      box-shadow: 0 10px 24px rgba(15, 95, 88, 0.22);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button.secondary {
+      background: linear-gradient(135deg, #e7decd, #d9cfbc);
+      color: var(--ink);
+      box-shadow: none;
+    }
+
+    button.warn {
+      background: linear-gradient(135deg, #9b5f0b, #70440b);
+      box-shadow: 0 10px 24px rgba(155, 95, 11, 0.22);
+    }
+
+    button.danger {
+      background: linear-gradient(135deg, #8b2e2e, #682121);
+      box-shadow: 0 10px 24px rgba(139, 46, 46, 0.20);
+    }
+
+    .list,
+    .tips,
+    .log {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .item {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(73, 74, 63, 0.13);
+    }
+
+    .item strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .item small {
+      display: block;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .message-item {
+      display: grid;
+      gap: 8px;
+    }
+
+    .message-item button {
+      justify-self: start;
+    }
+
+    code,
+    pre {
+      font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    pre {
+      margin: 0;
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(73, 74, 63, 0.14);
+      background: #f7f2e9;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #233338;
+      min-height: 120px;
+      overflow: auto;
+    }
+
+    .log-entry {
+      padding: 14px;
+      border-radius: 16px;
+      background: #f7f2e9;
+      border: 1px solid rgba(73, 74, 63, 0.14);
+    }
+
+    .log-entry time {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .hint {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        padding: 16px 12px 40px;
+      }
+
+      .hero,
+      .card {
+        border-radius: 24px;
+        padding: 18px;
+      }
+
+      .split,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Emergency Messaging Control Surface</div>
+          <h1>Hermes Relay Desktop</h1>
+          <p>
+            A local operator console for crisis messaging. This shell drives the Hermes Relay C core, keeps private
+            material local, and helps an operator decide whether to route traffic over LAN, Internet relay, or
+            physical file handoff when infrastructure degrades.
+          </p>
+          <div class="hero-actions">
+            <button onclick="refreshAll()">Refresh Situation</button>
+            <button class="secondary" onclick="bootstrapWorkspace()">Bootstrap Workspace</button>
+          </div>
+          <div class="hint" id="heroHint">
+            The UI is loopback-only. Plaintext exists only on the local operator device at compose and decrypt time.
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <span class="label">Network Mode</span>
+            <div class="value" id="statNetworkMode">Unknown</div>
+          </div>
+          <div class="stat">
+            <span class="label">Identities</span>
+            <div class="value" id="statIdentities">0</div>
+          </div>
+          <div class="stat">
+            <span class="label">Stored Envelopes</span>
+            <div class="value" id="statEnvelopes">0</div>
+          </div>
+          <div class="stat">
+            <span class="label">Configured Relays</span>
+            <div class="value" id="statRelays">0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <div class="column">
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2>Situation Overview</h2>
+              <p>Runtime, workspace, and relay posture for this local node.</p>
+            </div>
+            <div class="badge ok" id="networkBadge">Checking</div>
+          </div>
+          <div class="meta-grid" id="overviewMeta"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2>Identity And Contacts</h2>
+              <p>Generate a local identity, then import public contacts for recipients.</p>
+            </div>
+          </div>
+          <div class="split">
+            <form onsubmit="event.preventDefault(); generateIdentity();">
+              <div>
+                <label for="identityAlias">New identity alias</label>
+                <input id="identityAlias" value="operator-main">
+              </div>
+              <button type="submit">Generate Identity</button>
+            </form>
+            <form onsubmit="event.preventDefault(); importContact();">
+              <div>
+                <label for="contactSourcePath">Contact file path</label>
+                <input id="contactSourcePath" placeholder="/path/to/received.contact">
+              </div>
+              <div>
+                <label for="contactAlias">Stored alias override</label>
+                <input id="contactAlias" placeholder="optional">
+              </div>
+              <button type="submit" class="secondary">Import Contact</button>
+            </form>
+          </div>
+          <div class="split" style="margin-top: 14px;">
+            <div>
+              <h3>Local Identities</h3>
+              <div class="list" id="identityList"></div>
+            </div>
+            <div>
+              <h3>Known Contacts</h3>
+              <div class="list" id="contactList"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2>Compose A Message</h2>
+              <p>One sender, one recipient, very short plaintext, fixed PoW policy.</p>
+            </div>
+          </div>
+          <form onsubmit="event.preventDefault(); createMessage();">
+            <div class="split">
+              <div>
+                <label for="senderAlias">Sender identity</label>
+                <select id="senderAlias"></select>
+              </div>
+              <div>
+                <label for="recipientAlias">Recipient contact</label>
+                <select id="recipientAlias"></select>
+              </div>
+            </div>
+            <div class="split">
+              <div>
+                <label for="composeStoreName">Store name</label>
+                <input id="composeStoreName" value="main">
+              </div>
+              <div>
+                <label for="composeExportName">Optional envelope export name</label>
+                <input id="composeExportName" value="handoff-envelope.hrm">
+              </div>
+            </div>
+            <div class="split">
+              <div>
+                <label for="composePow">PoW difficulty</label>
+                <input id="composePow" value="28" inputmode="numeric">
+              </div>
+              <div>
+                <label for="composeTtl">TTL seconds (0 = protocol default)</label>
+                <input id="composeTtl" value="0" inputmode="numeric">
+              </div>
+            </div>
+            <div>
+              <label for="composeMessage">Plaintext</label>
+              <textarea id="composeMessage">Meet at water point 18:00. Bring list of names only.</textarea>
+            </div>
+            <button type="submit">Seal Message</button>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2>Store And Inbox</h2>
+              <p>Inspect stored envelopes, import or export bundles, and decrypt messages intended for a local identity.</p>
+            </div>
+          </div>
+          <div class="split">
+            <div>
+              <label for="storeName">Store name</label>
+              <input id="storeName" value="main">
+            </div>
+            <div>
+              <label for="decryptIdentityAlias">Identity for decrypt</label>
+              <select id="decryptIdentityAlias"></select>
+            </div>
+          </div>
+          <div class="button-row">
+            <button onclick="loadStoreMessages()">Load Messages</button>
+            <button class="secondary" onclick="cleanupStore()">Cleanup Store</button>
+          </div>
+          <div class="split" style="margin-top: 14px;">
+            <form onsubmit="event.preventDefault(); importBundle();">
+              <div>
+                <label for="bundleImportPath">Bundle path to import</label>
+                <input id="bundleImportPath" placeholder="/path/to/handoff.bundle">
+              </div>
+              <button type="submit" class="secondary">Import Bundle</button>
+            </form>
+            <form onsubmit="event.preventDefault(); exportBundle();">
+              <div>
+                <label for="bundleExportName">Bundle export name</label>
+                <input id="bundleExportName" value="main-store.bundle">
+              </div>
+              <button type="submit" class="secondary">Export Bundle</button>
+            </form>
+          </div>
+          <div style="margin-top: 14px;">
+            <label for="decryptEnvelopeId">Envelope ID to decrypt</label>
+            <input id="decryptEnvelopeId" placeholder="Select from the message list below or paste a full envelope ID">
+            <button style="margin-top: 10px;" onclick="decryptMessage()">Decrypt Selected</button>
+          </div>
+          <div class="list" id="messageList"></div>
+          <pre id="decryptResult">No message selected.</pre>
+        </section>
+      </div>
+
+      <div class="column">
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2>Relay Service</h2>
+              <p>Integrated relay runtime with local addressbook, status heartbeat, and periodic sync.</p>
+            </div>
+          </div>
+          <form onsubmit="event.preventDefault(); initRelay();">
+            <div class="split">
+              <div>
+                <label for="relayName">Relay name</label>
+                <input id="relayName" value="relay-main">
+              </div>
+              <div>
+                <label for="relayListen">Listen address</label>
+                <input id="relayListen" value="0.0.0.0:9440">
+              </div>
+            </div>
+            <button type="submit">Initialize Relay</button>
+          </form>
+          <div class="button-row">
+            <button onclick="relayStart()">Start Service</button>
+            <button class="secondary" onclick="relayStatus()">Read Status</button>
+            <button class="danger" onclick="relayStop()">Stop Service</button>
+          </div>
+          <div class="button-row">
+            <button class="secondary" onclick="relaySync()">Sync Once</button>
+            <button class="secondary" onclick="relayImports()">Process Imports</button>
+            <button class="secondary" onclick="relayExportLatest()">Export Latest Bundle</button>
+          </div>
+          <div class="meta-grid" id="relayMeta"></div>
+          <div class="split" style="margin-top: 14px;">
+            <form onsubmit="event.preventDefault(); relayAddPeer();">
+              <div>
+                <label for="relayPeerAddr">Peer address</label>
+                <input id="relayPeerAddr" value="192.168.1.44:9440">
+              </div>
+              <div>
+                <label for="relayPeerAlias">Peer alias</label>
+                <input id="relayPeerAlias" value="neighbor">
+              </div>
+              <button type="submit" class="secondary">Add Peer</button>
+            </form>
+            <form onsubmit="event.preventDefault(); relayDropFile();">
+              <div>
+                <label for="relayDropPath">File path to drop into relay import</label>
+                <input id="relayDropPath" placeholder="/path/to/handoff.bundle">
+              </div>
+              <button type="submit" class="secondary">Drop File</button>
+            </form>
+          </div>
+          <div style="margin-top: 14px;">
+            <label for="relayExportName">Latest bundle export name</label>
+            <input id="relayExportName" value="relay-latest.bundle">
+          </div>
+          <div class="list" id="relayPeerList"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2>Network Posture</h2>
+              <p>Best-effort local diagnostics for choosing relay over LAN, Internet, or file transfer.</p>
+            </div>
+            <div class="badge warn" id="networkModeBadge">Unknown</div>
+          </div>
+          <div class="meta-grid" id="networkMeta"></div>
+          <div class="tips" id="networkAdvice"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2>Emergency Playbook</h2>
+              <p>Recommended operator patterns when normal connectivity is unreliable or absent.</p>
+            </div>
+          </div>
+          <div class="tips">
+            <div class="item">
+              <strong>LAN available</strong>
+              <small>Keep one or more always-on relays on stable power. Add peer addresses manually, then let `relay-run` handle repeated syncs.</small>
+            </div>
+            <div class="item">
+              <strong>Internet partial</strong>
+              <small>Use the integrated relay on any reachable machine as a bridge between islands. Continue exporting bundles so that the same traffic can also move by USB if the bridge drops.</small>
+            </div>
+            <div class="item">
+              <strong>No network</strong>
+              <small>Export bundles, ferry them physically, and import them into a relay or store on the next reachable node. Do not copy internal store files directly.</small>
+            </div>
+            <div class="item">
+              <strong>Current desktop-shell limit</strong>
+              <small>This shell does not yet roam between Wi-Fi networks automatically. Aggressive network switching remains a later platform-specific transport feature.</small>
+            </div>
+          </div>
+        </section>
+
+        <section class="card tight">
+          <div class="card-header">
+            <div>
+              <h2>Operations Log</h2>
+              <p>Recent control-plane actions from this UI session.</p>
+            </div>
+          </div>
+          <div class="log" id="activityLog"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      overview: null,
+      network: null,
+      messages: [],
+      relayPeers: [],
+      logs: []
+    };
+
+    function el(id) {
+      return document.getElementById(id);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function prettyTime(unixValue) {
+      const value = Number(unixValue || 0);
+      if (!value) {
+        return "n/a";
+      }
+      return new Date(value * 1000).toLocaleString();
+    }
+
+    function sumEnvelopeCount(stores) {
+      return stores.reduce((sum, item) => sum + Number(item.envelope_count || 0), 0);
+    }
+
+    function badgeClassForMode(mode) {
+      if (mode === "internet-and-lan") {
+        return "ok";
+      }
+      if (mode === "lan-only" || mode === "limited-network") {
+        return "warn";
+      }
+      return "offline";
+    }
+
+    async function api(path, payload) {
+      const response = await fetch(path, {
+        method: payload ? "POST" : "GET",
+        headers: payload ? {"Content-Type": "application/json"} : {},
+        body: payload ? JSON.stringify(payload) : undefined
+      });
+      const data = await response.json();
+      if (!data.ok) {
+        throw new Error(data.error || "request failed");
+      }
+      return data.result;
+    }
+
+    function addLog(action, payload) {
+      state.logs.unshift({
+        ts: new Date(),
+        action,
+        payload
+      });
+      state.logs = state.logs.slice(0, 10);
+      renderLogs();
+    }
+
+    function renderLogs() {
+      const target = el("activityLog");
+      if (!state.logs.length) {
+        target.innerHTML = '<div class="empty">No actions yet.</div>';
+        return;
+      }
+      target.innerHTML = state.logs.map(entry => `
+        <div class="log-entry">
+          <time>${escapeHtml(entry.ts.toLocaleString())}</time>
+          <strong>${escapeHtml(entry.action)}</strong>
+          <div><code>${escapeHtml(JSON.stringify(entry.payload, null, 2))}</code></div>
+        </div>
+      `).join("");
+    }
+
+    function renderSelectOptions(id, items, fallbackLabel) {
+      const target = el(id);
+      const options = items.length
+        ? items.map(item => `<option value="${escapeHtml(item.alias)}">${escapeHtml(item.alias)}</option>`).join("")
+        : `<option value="">${escapeHtml(fallbackLabel)}</option>`;
+      target.innerHTML = options;
+    }
+
+    function renderStoreNameFallback() {
+      if (!el("storeName").value) {
+        el("storeName").value = "main";
+      }
+      if (!el("composeStoreName").value) {
+        el("composeStoreName").value = "main";
+      }
+    }
+
+    function renderOverview() {
+      const overview = state.overview;
+      if (!overview) {
+        return;
+      }
+      const network = overview.network || {};
+      const runtime = overview.runtime || {};
+
+      el("statNetworkMode").textContent = network.mode || "unknown";
+      el("statIdentities").textContent = String((overview.identities || []).length);
+      el("statEnvelopes").textContent = String(sumEnvelopeCount(overview.stores || []));
+      el("statRelays").textContent = String((overview.relays || []).length);
+
+      const networkClass = badgeClassForMode(network.mode);
+      el("networkBadge").className = `badge ${networkClass}`;
+      el("networkBadge").textContent = network.mode || "unknown";
+      el("networkModeBadge").className = `badge ${networkClass}`;
+      el("networkModeBadge").textContent = network.mode || "unknown";
+
+      el("heroHint").textContent = network.advisory && network.advisory.length
+        ? network.advisory[0]
+        : "Workspace ready. Use relay service on stable links and bundle handoff when links fail.";
+
+      el("overviewMeta").innerHTML = [
+        metaCard("Workspace root", runtime.workspace_root || overview.root || "n/a"),
+        metaCard("Native library", runtime.library_path || "n/a"),
+        metaCard("CLI path", runtime.cli_path || "n/a"),
+        metaCard("Exports directory", overview.exports_dir || "n/a"),
+        metaCard("Contacts", String((overview.contacts || []).length)),
+        metaCard("Stores", String((overview.stores || []).length))
+      ].join("");
+
+      renderSelectOptions("senderAlias", overview.identities || [], "Create an identity first");
+      renderSelectOptions("decryptIdentityAlias", overview.identities || [], "Create an identity first");
+      renderSelectOptions("recipientAlias", overview.contacts || [], "Import a contact first");
+      renderStoreNameFallback();
+
+      renderIdentityList(overview.identities || []);
+      renderContactList(overview.contacts || []);
+      renderRelaySummary(overview.relays || []);
+      renderRelayPicker(overview.relays || []);
+    }
+
+    function metaCard(label, value) {
+      return `
+        <div class="meta">
+          <strong>${escapeHtml(label)}</strong>
+          <span>${escapeHtml(value)}</span>
+        </div>
+      `;
+    }
+
+    function renderIdentityList(items) {
+      const target = el("identityList");
+      if (!items.length) {
+        target.innerHTML = '<div class="empty">No local identities yet.</div>';
+        return;
+      }
+      target.innerHTML = items.map(item => `
+        <div class="item">
+          <strong>${escapeHtml(item.alias)}</strong>
+          <small>Fingerprint: ${escapeHtml(item.fingerprint_hex)}</small>
+          <small>Recipient hint: ${escapeHtml(item.recipient_hint_hex)}</small>
+          <small>Path: ${escapeHtml(item.path)}</small>
+        </div>
+      `).join("");
+    }
+
+    function renderContactList(items) {
+      const target = el("contactList");
+      if (!items.length) {
+        target.innerHTML = '<div class="empty">No contacts imported yet.</div>';
+        return;
+      }
+      target.innerHTML = items.map(item => `
+        <div class="item">
+          <strong>${escapeHtml(item.alias)}</strong>
+          <small>Fingerprint: ${escapeHtml(item.fingerprint_hex)}</small>
+          <small>Recipient hint: ${escapeHtml(item.recipient_hint_hex)}</small>
+          <small>Path: ${escapeHtml(item.path)}</small>
+        </div>
+      `).join("");
+    }
+
+    function renderRelaySummary(relays) {
+      if (!relays.length) {
+        el("relayMeta").innerHTML = '<div class="empty">No relay initialized yet.</div>';
+        el("relayPeerList").innerHTML = '<div class="empty">No relay peers to display.</div>';
+        return;
+      }
+      const relay = relays.find(item => item.name === el("relayName").value) || relays[0];
+      renderRelayStatus(relay);
+    }
+
+    function renderRelayPicker(relays) {
+      if (!relays.length) {
+        return;
+      }
+      const current = relays.find(item => item.name === el("relayName").value) || relays[0];
+      el("relayName").value = current.name;
+    }
+
+    function renderRelayStatus(relay) {
+      const items = [
+        metaCard("Relay state", relay.state || "unknown"),
+        metaCard("Listen address", relay.listen_addr || "n/a"),
+        metaCard("Peer count", String(relay.peer_count || 0)),
+        metaCard("Active peers", String(relay.active_peers || 0)),
+        metaCard("Store envelopes", String(relay.store_envelopes || 0)),
+        metaCard("Last sync", prettyTime(relay.last_sync_at_unix))
+      ];
+      el("relayMeta").innerHTML = items.join("");
+    }
+
+    function renderNetwork() {
+      const network = state.network;
+      if (!network) {
+        return;
+      }
+      el("networkMeta").innerHTML = [
+        metaCard("Hostname", network.hostname || "n/a"),
+        metaCard("Addresses", (network.addresses || []).join(", ") || "none"),
+        metaCard("Private LAN", (network.private_lan_addresses || []).join(", ") || "none"),
+        metaCard("Internet reachable", String(Boolean(network.internet_reachable))),
+        metaCard("LAN available", String(Boolean(network.lan_available))),
+        metaCard("Last check", prettyTime(network.checked_at_unix))
+      ].join("");
+      const advice = network.advisory || [];
+      el("networkAdvice").innerHTML = advice.length
+        ? advice.map(item => `<div class="item"><strong>Operator advice</strong><small>${escapeHtml(item)}</small></div>`).join("")
+        : '<div class="empty">No advisory available.</div>';
+    }
+
+    function renderMessages() {
+      const target = el("messageList");
+      if (!state.messages.length) {
+        target.innerHTML = '<div class="empty">No messages loaded for this store.</div>';
+        return;
+      }
+      target.innerHTML = state.messages.map(item => `
+        <div class="item message-item">
+          <strong>${escapeHtml(item.envelope_id_hex)}</strong>
+          <small>Created: ${escapeHtml(prettyTime(item.created_at_unix))}</small>
+          <small>Expires: ${escapeHtml(prettyTime(item.expires_at_unix))}</small>
+          <small>PoW: ${escapeHtml(item.pow_difficulty)} bits, payload: ${escapeHtml(item.payload_size)} bytes</small>
+          <button class="secondary" onclick="selectEnvelope('${escapeHtml(item.envelope_id_hex)}')">Use For Decrypt</button>
+        </div>
+      `).join("");
+    }
+
+    function renderRelayPeers() {
+      const target = el("relayPeerList");
+      if (!state.relayPeers.length) {
+        target.innerHTML = '<div class="empty">No peers recorded for this relay.</div>';
+        return;
+      }
+      target.innerHTML = state.relayPeers.map(item => `
+        <div class="item">
+          <strong>${escapeHtml(item.alias || item.address)}</strong>
+          <small>Address: ${escapeHtml(item.address)}</small>
+          <small>Last success: ${escapeHtml(prettyTime(item.last_success_unix))}</small>
+          <small>Failures: ${escapeHtml(item.consecutive_failures)} | Inactive: ${escapeHtml(item.inactive)}</small>
+        </div>
+      `).join("");
+    }
+
+    async function bootstrapWorkspace() {
+      const result = await api("/api/workspace/bootstrap", {});
+      addLog("workspace/bootstrap", result);
+      await refreshAll();
+    }
+
+    async function refreshOverview() {
+      state.overview = await api("/api/overview");
+      renderOverview();
+    }
+
+    async function refreshNetwork() {
+      state.network = await api("/api/network");
+      renderNetwork();
+    }
+
+    async function refreshAll() {
+      await Promise.all([refreshOverview(), refreshNetwork()]);
+      await relayPeers();
+    }
+
+    async function generateIdentity() {
+      const result = await api("/api/workspace/identity-generate", {
+        alias: el("identityAlias").value
+      });
+      addLog("identity/generate", result);
+      await refreshOverview();
+    }
+
+    async function importContact() {
+      const result = await api("/api/workspace/contact-import", {
+        source_path: el("contactSourcePath").value,
+        alias: el("contactAlias").value || null
+      });
+      addLog("contact/import", result);
+      await refreshOverview();
+    }
+
+    async function createMessage() {
+      const result = await api("/api/workspace/message-create", {
+        sender_alias: el("senderAlias").value,
+        recipient_alias: el("recipientAlias").value,
+        store_name: el("composeStoreName").value,
+        message: el("composeMessage").value,
+        ttl_seconds: Number(el("composeTtl").value || 0),
+        pow_difficulty: Number(el("composePow").value || 28),
+        export_name: el("composeExportName").value || null
+      });
+      addLog("message/create", result);
+      el("storeName").value = el("composeStoreName").value;
+      await refreshOverview();
+      await loadStoreMessages();
+    }
+
+    async function loadStoreMessages() {
+      state.messages = await api("/api/workspace/store-list", {
+        store_name: el("storeName").value
+      });
+      renderMessages();
+      addLog("store/list", {store_name: el("storeName").value, count: state.messages.length});
+    }
+
+    async function cleanupStore() {
+      const result = await api("/api/workspace/store-cleanup", {
+        store_name: el("storeName").value
+      });
+      addLog("store/cleanup", result);
+      await refreshOverview();
+      await loadStoreMessages();
+    }
+
+    async function importBundle() {
+      const result = await api("/api/workspace/bundle-import", {
+        store_name: el("storeName").value,
+        source_path: el("bundleImportPath").value
+      });
+      addLog("bundle/import", result);
+      await refreshOverview();
+      await loadStoreMessages();
+    }
+
+    async function exportBundle() {
+      const result = await api("/api/workspace/bundle-export", {
+        store_name: el("storeName").value,
+        output_name: el("bundleExportName").value
+      });
+      addLog("bundle/export", result);
+      await refreshOverview();
+    }
+
+    function selectEnvelope(envelopeId) {
+      el("decryptEnvelopeId").value = envelopeId;
+    }
+
+    async function decryptMessage() {
+      const result = await api("/api/workspace/store-read", {
+        store_name: el("storeName").value,
+        identity_alias: el("decryptIdentityAlias").value,
+        envelope_id_hex: el("decryptEnvelopeId").value
+      });
+      el("decryptResult").textContent = JSON.stringify(result, null, 2);
+      addLog("store/decrypt", result.summary || result);
+    }
+
+    async function initRelay() {
+      const result = await api("/api/workspace/relay-init", {
+        relay_name: el("relayName").value,
+        listen_addr: el("relayListen").value
+      });
+      addLog("relay/init", result);
+      await refreshAll();
+    }
+
+    async function relayStatus() {
+      const result = await api("/api/workspace/relay-status", {
+        relay_name: el("relayName").value
+      });
+      renderRelayStatus(result);
+      addLog("relay/status", result);
+    }
+
+    async function relayStart() {
+      const result = await api("/api/workspace/relay-start", {
+        relay_name: el("relayName").value
+      });
+      renderRelayStatus(result);
+      addLog("relay/start", result);
+      await relayPeers();
+    }
+
+    async function relayStop() {
+      const result = await api("/api/workspace/relay-stop", {
+        relay_name: el("relayName").value
+      });
+      renderRelayStatus(result);
+      addLog("relay/stop", result);
+    }
+
+    async function relayAddPeer() {
+      const result = await api("/api/workspace/relay-add-peer", {
+        relay_name: el("relayName").value,
+        peer_addr: el("relayPeerAddr").value,
+        alias: el("relayPeerAlias").value || null
+      });
+      addLog("relay/add-peer", result);
+      await relayPeers();
+      await relayStatus();
+    }
+
+    async function relayPeers() {
+      try {
+        state.relayPeers = await api("/api/workspace/relay-peers", {
+          relay_name: el("relayName").value
+        });
+      } catch (error) {
+        state.relayPeers = [];
+      }
+      renderRelayPeers();
+    }
+
+    async function relaySync() {
+      const result = await api("/api/workspace/relay-sync", {
+        relay_name: el("relayName").value
+      });
+      addLog("relay/sync", result);
+      await refreshAll();
+    }
+
+    async function relayImports() {
+      const result = await api("/api/workspace/relay-imports", {
+        relay_name: el("relayName").value
+      });
+      addLog("relay/imports", result);
+      await refreshAll();
+    }
+
+    async function relayExportLatest() {
+      const result = await api("/api/workspace/relay-export", {
+        relay_name: el("relayName").value,
+        output_name: el("relayExportName").value
+      });
+      addLog("relay/export-latest", result);
+      await refreshOverview();
+    }
+
+    async function relayDropFile() {
+      const result = await api("/api/workspace/relay-drop", {
+        relay_name: el("relayName").value,
+        source_path: el("relayDropPath").value
+      });
+      addLog("relay/drop-file", result);
+      await refreshOverview();
+    }
+
+    window.addEventListener("load", async () => {
+      renderLogs();
+      try {
+        await bootstrapWorkspace();
+      } catch (error) {
+        addLog("bootstrap/error", String(error));
+      }
+      setInterval(() => {
+        refreshAll().catch(error => addLog("refresh/error", String(error)));
+      }, 15000);
+    });
+  </script>
+</body>
+</html>

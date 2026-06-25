@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hermes-desktop"
+version = "0.1.0"
+description = "Python desktop wrapper and local web shell for Hermes Relay"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Hermes Relay" }
+]
+dependencies = []
+
+[project.optional-dependencies]
+desktop = ["pywebview>=5,<6"]
+packaging = ["pyinstaller>=6,<7"]
+
+[project.scripts]
+hermes-desktop = "hermes_desktop.__main__:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+hermes_desktop = ["assets/*.html"]

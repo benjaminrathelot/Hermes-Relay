@@ -1,0 +1,17 @@
+build/
+out/
+work/
+dist/
+*.o
+*.a
+*.so
+*.dylib
+*.bin
+*.bundle
+*.tmp
+*.pyc
+__pycache__/
+.venv/
+.pytest_cache/
+*.spec
+.DS_Store

@@ -1,0 +1,22 @@
+[Unit]
+Description=Hermes Relay node %i
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hermes
+Group=hermes
+WorkingDirectory=/var/lib/hermes-relay/%i
+ExecStart=/usr/local/bin/hermes-cli relay-run --root /var/lib/hermes-relay/%i
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/hermes-relay/%i
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

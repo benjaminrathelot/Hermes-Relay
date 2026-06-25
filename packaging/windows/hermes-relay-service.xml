@@ -1,0 +1,14 @@
+<service>
+  <id>hermes-relay-node</id>
+  <name>Hermes Relay Node</name>
+  <description>Hermes Relay foreground node wrapped by WinSW.</description>
+  <executable>%BASE%\\hermes-cli.exe</executable>
+  <arguments>relay-run --root C:\ProgramData\HermesRelay\node1</arguments>
+  <logpath>C:\ProgramData\HermesRelay\node1\logs</logpath>
+  <log mode="roll-by-size-time">
+    <sizeThreshold>10485760</sizeThreshold>
+    <pattern>yyyyMMdd</pattern>
+    <keepFiles>8</keepFiles>
+  </log>
+  <onfailure action="restart" delay="5 sec" />
+</service>
