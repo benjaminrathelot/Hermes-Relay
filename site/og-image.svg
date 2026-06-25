@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Hermes Relay social preview">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1418"/>
+      <stop offset="55%" stop-color="#081114"/>
+      <stop offset="100%" stop-color="#05090b"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0%" cy="0%" r="100%">
+      <stop offset="0%" stop-color="#3ad08e" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#3ad08e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="100%" cy="0%" r="100%">
+      <stop offset="0%" stop-color="#d8a75d" stop-opacity="0.24"/>
+      <stop offset="100%" stop-color="#d8a75d" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" rx="28" fill="url(#bg)"/>
+  <rect width="1200" height="630" rx="28" fill="url(#glowA)"/>
+  <rect width="1200" height="630" rx="28" fill="url(#glowB)"/>
+
+  <g opacity="0.16">
+    <path d="M0 120H1200" stroke="#8fb0a1" stroke-width="1"/>
+    <path d="M0 210H1200" stroke="#8fb0a1" stroke-width="1"/>
+    <path d="M0 300H1200" stroke="#8fb0a1" stroke-width="1"/>
+    <path d="M0 390H1200" stroke="#8fb0a1" stroke-width="1"/>
+    <path d="M0 480H1200" stroke="#8fb0a1" stroke-width="1"/>
+    <path d="M170 0V630" stroke="#8fb0a1" stroke-width="1"/>
+    <path d="M320 0V630" stroke="#8fb0a1" stroke-width="1"/>
+    <path d="M470 0V630" stroke="#8fb0a1" stroke-width="1"/>
+    <path d="M620 0V630" stroke="#8fb0a1" stroke-width="1"/>
+    <path d="M770 0V630" stroke="#8fb0a1" stroke-width="1"/>
+    <path d="M920 0V630" stroke="#8fb0a1" stroke-width="1"/>
+  </g>
+
+  <g transform="translate(70 72)">
+    <rect x="0" y="0" width="152" height="52" rx="16" fill="#0f211e" stroke="#355648"/>
+    <text x="28" y="34" fill="#eef4ed" font-family="IBM Plex Sans, Arial, sans-serif" font-size="24" font-weight="700">HR</text>
+    <text x="270" y="52" fill="#d2d88e" font-family="IBM Plex Sans, Arial, sans-serif" font-size="18" letter-spacing="4" text-transform="uppercase">Offline messaging protocol</text>
+    <text x="0" y="146" fill="#eef4ed" font-family="Fraunces, Georgia, serif" font-size="76" font-weight="600">
+      Hermes Relay
+    </text>
+    <text x="0" y="228" fill="#eef4ed" font-family="Fraunces, Georgia, serif" font-size="42" font-weight="500">
+      Crisis communication across smart relays,
+    </text>
+    <text x="0" y="278" fill="#eef4ed" font-family="Fraunces, Georgia, serif" font-size="42" font-weight="500">
+      partial networks, file handoff, and physical carry.
+    </text>
+    <text x="0" y="356" fill="#94a79e" font-family="IBM Plex Sans, Arial, sans-serif" font-size="28">
+      One sender. One recipient. One encrypted envelope.
+    </text>
+    <text x="0" y="402" fill="#94a79e" font-family="IBM Plex Sans, Arial, sans-serif" font-size="28">
+      Delivery can take minutes or days. Communication still continues.
+    </text>
+  </g>
+
+  <g transform="translate(770 112)" filter="url(#softGlow)">
+    <rect x="0" y="0" width="340" height="406" rx="30" fill="#0d1718" stroke="#29443c"/>
+    <path d="M38 88 L170 42 L302 104" fill="none" stroke="#9bf2c7" stroke-width="3" stroke-dasharray="8 12"/>
+    <path d="M62 268 L172 182 L282 290" fill="none" stroke="#d8a75d" stroke-width="3" stroke-dasharray="8 12"/>
+    <circle cx="38" cy="88" r="11" fill="#9bf2c7"/>
+    <circle cx="170" cy="42" r="12" fill="#9bf2c7"/>
+    <circle cx="302" cy="104" r="11" fill="#9bf2c7"/>
+    <circle cx="62" cy="268" r="10" fill="#d8a75d"/>
+    <circle cx="172" cy="182" r="12" fill="#9bf2c7"/>
+    <circle cx="282" cy="290" r="10" fill="#d8a75d"/>
+    <rect x="32" y="330" width="276" height="52" rx="14" fill="#111e20" stroke="#314a43"/>
+    <text x="50" y="362" fill="#eef4ed" font-family="IBM Plex Sans, Arial, sans-serif" font-size="18" font-weight="700">Relay fabric</text>
+    <text x="50" y="389" fill="#94a79e" font-family="IBM Plex Sans, Arial, sans-serif" font-size="15">LAN, Wi-Fi, file export, USB, partial Internet</text>
+  </g>
+</svg>
