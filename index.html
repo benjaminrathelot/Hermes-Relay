@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hermes Relay | Offline Messaging Protocol For Crisis Communication</title>
+  <meta name="description" content="Hermes Relay is an offline-first messaging protocol for crisis communication. It moves short encrypted messages across smart relays, local networks, file handoff, and physically carried devices when Internet access is partial or absent.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://benjaminrathelot.github.io/Hermes-Relay/">
+  <meta property="og:title" content="Hermes Relay">
+  <meta property="og:description" content="Offline-first crisis messaging over smart relays, file handoff, local networks, and physically carried devices.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://benjaminrathelot.github.io/Hermes-Relay/">
+  <meta property="og:site_name" content="Hermes Relay">
+  <meta property="og:image" content="https://benjaminrathelot.github.io/Hermes-Relay/og-image.svg">
+  <meta property="og:image:alt" content="Hermes Relay offline-first crisis messaging protocol overview">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hermes Relay">
+  <meta name="twitter:description" content="Offline-first crisis messaging over smart relays, partial networks, and physical carry.">
+  <meta name="twitter:image" content="https://benjaminrathelot.github.io/Hermes-Relay/og-image.svg">
+  <meta name="theme-color" content="#0a1418">
+  <meta name="author" content="Benjamin Rathelot">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://benjaminrathelot.github.io/Hermes-Relay/#website",
+        "url": "https://benjaminrathelot.github.io/Hermes-Relay/",
+        "name": "Hermes Relay",
+        "description": "Offline-first messaging protocol for crisis communication across relays, partial networks, and physically carried devices."
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://benjaminrathelot.github.io/Hermes-Relay/#organization",
+        "name": "Hermes Relay",
+        "url": "https://benjaminrathelot.github.io/Hermes-Relay/",
+        "sameAs": [
+          "https://github.com/benjaminrathelot/Hermes-Relay"
+        ]
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://benjaminrathelot.github.io/Hermes-Relay/#software",
+        "name": "Hermes Relay",
+        "codeRepository": "https://github.com/benjaminrathelot/Hermes-Relay",
+        "license": "https://github.com/benjaminrathelot/Hermes-Relay/blob/main/LICENSE",
+        "programmingLanguage": [
+          "C",
+          "Python"
+        ],
+        "runtimePlatform": [
+          "Linux",
+          "macOS",
+          "Windows"
+        ],
+        "applicationCategory": "CommunicationApplication",
+        "description": "Hermes Relay is an offline-first crisis communication protocol and portable C core for short encrypted messages that move across relays, local networks, file handoff, and physically carried devices."
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benjaminrathelot.github.io/Hermes-Relay/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Does Hermes Relay require Internet access?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Hermes Relay is designed to work without Internet access. It can move encrypted messages over LAN, local Wi-Fi, file import and export, USB transfer, and physically carried devices. Partial Internet can help bridge some regions, but the protocol does not depend on it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does the user need to do?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The intended user flow is simple: create an identity, add contacts, write a short message to one recipient, and read messages that arrive for that identity. Relays are supposed to handle the opportunistic diffusion work in the background."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Hermes Relay a group chat or social feed?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Hermes Relay V1 uses a narrow communication model: one message, one sender, and one recipient. It is intentionally not a group chat, not a broadcast channel, and not a public social feed."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can delivery take days?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Hermes Relay accepts delayed delivery as part of its design. Messages can move across several relays and disconnected islands before reaching the recipient, especially in crisis conditions."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="#top">
+        <span class="brand-mark">HR</span>
+        <span class="brand-text">
+          <strong>Hermes Relay</strong>
+          <small>Offline messaging protocol + portable C core</small>
+        </span>
+      </a>
+      <nav class="site-nav">
+        <a href="#why">Why</a>
+        <a href="#user-model">User Model</a>
+        <a href="#flow">How It Works</a>
+        <a href="#network">Relay Fabric</a>
+        <a href="#faq">FAQ</a>
+        <a href="#roadmap">Next Steps</a>
+        <a href="https://github.com/benjaminrathelot/Hermes-Relay">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="pulse-dot"></span>
+            Field communication continuity
+          </div>
+          <h1>Offline messaging for crisis communication when normal networks fail.</h1>
+          <p class="hero-lead">
+            Hermes Relay is an offline-first messaging protocol for degraded environments: war zones, weather disasters, infrastructure collapse,
+            and split regions where some places still have connectivity and others have none.
+          </p>
+          <p class="hero-body">
+            One sender. One recipient. One encrypted envelope. No central server required. A message can cross several relays through LAN, Wi-Fi, partial Internet
+            bridges, file import/export, or the physical movement of a laptop, phone, relay box, or storage device carrying encrypted envelopes
+            until the recipient eventually receives them.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://github.com/benjaminrathelot/Hermes-Relay">View Repository</a>
+            <a class="button button-secondary" href="https://github.com/benjaminrathelot/Hermes-Relay/blob/main/docs/protocol-spec.md">Read The Protocol</a>
+          </div>
+          <ul class="signal-list">
+            <li>Offline-first</li>
+            <li>Store-carry-forward</li>
+            <li>Smart relay diffusion</li>
+            <li>No trusted server</li>
+            <li>Delivery can take minutes or days</li>
+          </ul>
+        </div>
+
+        <div class="hero-visual">
+          <div class="visual-frame">
+            <div class="status-ribbon">Operational relay picture</div>
+            <div class="signal-layer signal-layer-a"></div>
+            <div class="signal-layer signal-layer-b"></div>
+            <div class="tactical-grid"></div>
+            <div class="mesh">
+              <span class="mesh-node node-a"></span>
+              <span class="mesh-node node-b"></span>
+              <span class="mesh-node node-c"></span>
+              <span class="mesh-node node-d"></span>
+              <span class="mesh-node node-e"></span>
+              <span class="mesh-line line-ab"></span>
+              <span class="mesh-line line-bc"></span>
+              <span class="mesh-line line-cd"></span>
+              <span class="mesh-line line-de"></span>
+              <span class="mesh-packet packet-1"></span>
+              <span class="mesh-packet packet-2"></span>
+            </div>
+            <div class="ops-strip">
+              <div class="ops-item">
+                <strong>Zone Alpha</strong>
+                <span>LAN relay active</span>
+              </div>
+              <div class="ops-item">
+                <strong>Zone Bravo</strong>
+                <span>Carrier handoff pending</span>
+              </div>
+              <div class="ops-item">
+                <strong>Zone Delta</strong>
+                <span>Internet bridge intermittent</span>
+              </div>
+            </div>
+            <div class="visual-cards">
+              <article class="mini-card">
+                <span class="mini-label">Path A</span>
+                <strong>LAN relay</strong>
+                <p>Same shelter. Same local network.</p>
+              </article>
+              <article class="mini-card">
+                <span class="mini-label">Path B</span>
+                <strong>File handoff</strong>
+                <p>Bundle exported, carried, imported later.</p>
+              </article>
+              <article class="mini-card">
+                <span class="mini-label">Path C</span>
+                <strong>Partial Internet</strong>
+                <p>One city online. Another offline.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scenario-strip" id="why">
+        <article class="scenario-card">
+          <span class="scenario-kicker">When normal apps fail</span>
+          <h2>Hermes Relay exists for broken conditions, not ideal ones.</h2>
+          <p>
+            If sender and recipient never overlap online, if towers are down, if only one district still has Internet, or if the
+            message must travel by human movement, the protocol still has a job to do.
+          </p>
+        </article>
+        <article class="scenario-card">
+          <span class="scenario-metric">No live path required</span>
+          <h3>Delay is acceptable. Silence is not.</h3>
+          <p>
+            Hermes Relay assumes that a message may need to wait on a relay, a workstation, or a carried device until the next contact opportunity appears.
+          </p>
+        </article>
+      </section>
+
+      <section class="section user-section" id="user-model">
+        <div class="section-heading">
+          <span class="eyebrow">What The User Actually Does</span>
+          <h2>For the end user, this should feel simpler than the network behind it.</h2>
+          <p>
+            The user should not have to route traffic manually. They create an identity, add contacts, write a short message, and read messages
+            that arrive for them. The relay layer is responsible for the spider work in the background.
+          </p>
+        </div>
+
+        <div class="user-grid">
+          <article class="user-card">
+            <span class="mini-label">Identity</span>
+            <h3>Each participant has a public/private key pair.</h3>
+            <p>
+              Every message is created by one sender identity and encrypted for one recipient identity. Hermes Relay is not group chat, not
+              broadcast social posting, and not a public feed.
+            </p>
+          </article>
+          <article class="user-card">
+            <span class="mini-label">Message model</span>
+            <h3>One message. One sender. One recipient.</h3>
+            <p>
+              The protocol keeps the unit of communication narrow and auditable. A user writes a short text and addresses it to a single contact.
+            </p>
+          </article>
+          <article class="user-card">
+            <span class="mini-label">Relay behavior</span>
+            <h3>The relay is the opportunistic operator.</h3>
+            <p>
+              Relays discover contact opportunities, exchange inventories, request missing envelopes, deduplicate traffic, store what is valid,
+              and keep diffusing messages without asking the user to micromanage each hop.
+            </p>
+          </article>
+          <article class="user-card">
+            <span class="mini-label">Practical effect</span>
+            <h3>The user carries messages by using the system, not by understanding routing.</h3>
+            <p>
+              As future mobile apps arrive, even small devices will be able to carry and relay large numbers of short encrypted messages while
+              the end user focuses on communication, not network topology.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="flow">
+        <div class="section-heading">
+          <span class="eyebrow">How It Works</span>
+          <h2>One encrypted envelope. Several possible hops. Intelligent relay behavior in between.</h2>
+          <p>
+            The protocol does not need one continuous network path from origin to destination. It only needs enough intermittent contact
+            for relays and devices to exchange opaque envelopes over time.
+          </p>
+        </div>
+
+        <div class="flow-grid">
+          <article class="flow-step">
+            <span class="step-number">01</span>
+            <h3>Compose</h3>
+            <p>A sender creates a short encrypted message for exactly one recipient, signs it, and solves the attached proof of work.</p>
+          </article>
+          <article class="flow-step">
+            <span class="step-number">02</span>
+            <h3>Store</h3>
+            <p>The message is stored locally in a client or relay. Plaintext is never sent across the transport fabric.</p>
+          </article>
+          <article class="flow-step">
+            <span class="step-number">03</span>
+            <h3>Diffuse</h3>
+            <p>The relay does the opportunistic work: inventory exchange, missing-envelope requests, validation, storage, prioritization, and onward propagation.</p>
+          </article>
+          <article class="flow-step">
+            <span class="step-number">04</span>
+            <h3>Carry</h3>
+            <p>Whenever new contact becomes possible, the envelope can move over LAN, Wi-Fi, Internet relay, file handoff, or a physically carried device.</p>
+          </article>
+          <article class="flow-step">
+            <span class="step-number">05</span>
+            <h3>Relay Again</h3>
+            <p>The next node stores it, deduplicates it, and later forwards it onward. The process repeats until it reaches the recipient side.</p>
+          </article>
+          <article class="flow-step">
+            <span class="step-number">06</span>
+            <h3>Deliver</h3>
+            <p>The intended recipient decrypts the envelope locally. The sender and recipient never need to be online together.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section network-section" id="network">
+        <div class="section-heading">
+          <span class="eyebrow">Relay Fabric</span>
+          <h2>A communication fabric made from whatever links still exist.</h2>
+          <p>
+            Some locations may have Internet. Others may only have local Wi-Fi. Others may require physical transport of a device or bundle.
+            Hermes Relay is built for all of these links to coexist inside one propagation model.
+          </p>
+        </div>
+
+        <div class="network-layout">
+          <div class="map-panel">
+            <svg class="world-map" viewBox="0 0 1200 620" aria-label="Stylized map of relay regions">
+              <defs>
+                <linearGradient id="ocean" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#0f1d33"></stop>
+                  <stop offset="100%" stop-color="#07111f"></stop>
+                </linearGradient>
+                <linearGradient id="land" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#123b3f"></stop>
+                  <stop offset="100%" stop-color="#0a282e"></stop>
+                </linearGradient>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="6" result="blur"></feGaussianBlur>
+                  <feMerge>
+                    <feMergeNode in="blur"></feMergeNode>
+                    <feMergeNode in="SourceGraphic"></feMergeNode>
+                  </feMerge>
+                </filter>
+              </defs>
+              <rect width="1200" height="620" rx="30" fill="url(#ocean)"></rect>
+              <path class="continent" d="M92,226 C145,153 235,114 314,131 C380,145 420,193 446,243 C469,287 445,330 382,339 C349,344 321,364 287,383 C218,423 141,403 106,359 C74,319 64,267 92,226 Z" fill="url(#land)"></path>
+              <path class="continent" d="M470,138 C549,95 655,90 729,118 C798,145 827,195 814,239 C803,277 767,304 719,316 C693,323 678,338 669,367 C652,417 621,451 576,459 C530,467 480,445 455,399 C426,345 420,279 426,228 C431,187 446,151 470,138 Z" fill="url(#land)"></path>
+              <path class="continent" d="M826,226 C885,175 971,157 1048,181 C1094,196 1130,225 1142,264 C1156,309 1134,351 1088,372 C1054,388 1021,398 985,402 C947,406 926,420 905,444 C878,473 838,484 802,470 C760,454 740,412 744,371 C748,329 780,265 826,226 Z" fill="url(#land)"></path>
+
+              <g class="relay-links">
+                <path class="arc arc-one" d="M232,244 C392,128 534,132 671,243"></path>
+                <path class="arc arc-two" d="M676,256 C807,178 917,185 1015,261"></path>
+                <path class="arc arc-three" d="M298,314 C514,471 720,471 932,320"></path>
+              </g>
+
+              <g class="relay-nodes" filter="url(#glow)">
+                <circle class="relay-node online" cx="232" cy="244" r="9"></circle>
+                <circle class="relay-node online" cx="671" cy="243" r="10"></circle>
+                <circle class="relay-node online" cx="1015" cy="261" r="9"></circle>
+                <circle class="relay-node offline" cx="298" cy="314" r="8"></circle>
+                <circle class="relay-node offline" cx="932" cy="320" r="8"></circle>
+              </g>
+
+              <g class="message-pulses">
+                <circle class="pulse pulse-a" r="6" cx="232" cy="244"></circle>
+                <circle class="pulse pulse-b" r="6" cx="671" cy="243"></circle>
+                <circle class="pulse pulse-c" r="6" cx="298" cy="314"></circle>
+              </g>
+            </svg>
+
+            <div class="map-caption">
+              <div>
+                <strong>Online zones</strong>
+                <span>Local sync or Internet bridging possible</span>
+              </div>
+              <div>
+                <strong>Dark zones</strong>
+                <span>Traffic continues later by relay or physical carry</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="network-sidebar">
+            <article class="network-card">
+              <span class="network-type">Live contact</span>
+              <h3>LAN, Wi-Fi, hotspot, bridge relay</h3>
+              <p>Two relays or clients meet, exchange inventories, request what is missing, verify envelopes, and keep diffusing traffic automatically.</p>
+            </article>
+            <article class="network-card">
+              <span class="network-type">Deferred contact</span>
+              <h3>File export, USB, carried phone or laptop</h3>
+              <p>An encrypted bundle leaves one island, travels physically, and is imported later into another island’s relay or desktop app.</p>
+            </article>
+            <article class="network-card">
+              <span class="network-type">Mixed geography</span>
+              <h3>Some places online, others offline</h3>
+              <p>Internet-connected relays can bridge long distances while isolated areas continue to move traffic by local or physical means.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section timeline-section">
+        <div class="section-heading">
+          <span class="eyebrow">Delivery Over Time</span>
+          <h2>The protocol accepts delay in exchange for survivability.</h2>
+          <p>
+            Hermes Relay is useful precisely because communication can continue even when delivery is not immediate.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <article class="timeline-item">
+            <span class="timeline-time">Hour 0</span>
+            <h3>Message created</h3>
+            <p>A field operator creates one short encrypted message for one recipient.</p>
+          </article>
+          <article class="timeline-item">
+            <span class="timeline-time">Hour 3</span>
+            <h3>Local relay sync</h3>
+            <p>A nearby relay receives the envelope over LAN and keeps it in store.</p>
+          </article>
+          <article class="timeline-item">
+            <span class="timeline-time">Day 1</span>
+            <h3>Bundle ferried physically</h3>
+            <p>A laptop or phone carrying bundles crosses into another district and imports them there.</p>
+          </article>
+          <article class="timeline-item">
+            <span class="timeline-time">Day 2</span>
+            <h3>Bridge zone online</h3>
+            <p>A relay in one connected area forwards traffic across a partial Internet link.</p>
+          </article>
+          <article class="timeline-item">
+            <span class="timeline-time">Day 3</span>
+            <h3>Recipient side receives</h3>
+            <p>The recipient’s device eventually decrypts the message locally.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section faq-section" id="faq">
+        <div class="section-heading">
+          <span class="eyebrow">Frequently Asked Questions</span>
+          <h2>What people usually need to understand first.</h2>
+          <p>
+            Hermes Relay is easiest to understand once the user model and relay model are separated clearly.
+          </p>
+        </div>
+
+        <div class="faq-grid">
+          <article class="faq-card">
+            <h3>Does Hermes Relay require Internet access?</h3>
+            <p>No. It can work entirely without Internet. Partial Internet only helps bridge some regions more quickly when available.</p>
+          </article>
+          <article class="faq-card">
+            <h3>What does the end user actually do?</h3>
+            <p>Create an identity, add contacts, write a short message to one recipient, and read messages addressed to that identity.</p>
+          </article>
+          <article class="faq-card">
+            <h3>What do relays do automatically?</h3>
+            <p>Relays exchange inventories, request missing envelopes, verify messages, deduplicate traffic, store valid envelopes, and keep diffusing them opportunistically.</p>
+          </article>
+          <article class="faq-card">
+            <h3>Can delivery take hours or days?</h3>
+            <p>Yes. That is normal in the design. The protocol is meant to preserve communication across fragmented geography and intermittent contact, not guarantee instant delivery.</p>
+          </article>
+          <article class="faq-card">
+            <h3>Is this group chat?</h3>
+            <p>No. Hermes Relay V1 is intentionally narrow: one sender, one recipient, one short encrypted message, no attachments, no public feed.</p>
+          </article>
+          <article class="faq-card">
+            <h3>Why is mobile integration important?</h3>
+            <p>Because the long-term value is strongest when phones and other small devices can participate directly as senders, receivers, carriers, and relays in the same protocol.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section project-section">
+        <div class="project-grid">
+          <div class="project-copy">
+            <span class="eyebrow">Project Scope</span>
+            <h2>Protocol first. Smart relay behavior next. Mobile field use after that.</h2>
+            <p>
+              The repository already includes a serious V1 protocol baseline: canonical envelopes, crypto, relay runtime, CLI, simulator,
+              Python wrapper, and a local desktop control surface.
+            </p>
+            <p>
+              The next major step is mobile integration, so that smaller devices can store, carry, and relay high volumes of short encrypted
+              messages in the same multi-hop propagation fabric.
+            </p>
+          </div>
+          <div class="milestone-stack" id="roadmap">
+            <article class="milestone-card current">
+              <span class="milestone-state">Current</span>
+              <h3>Portable C core and relay baseline</h3>
+              <p>Protocol, storage, relay service, simulator, CLI, Python wrapper, and desktop shell.</p>
+            </article>
+            <article class="milestone-card next">
+              <span class="milestone-state">Next</span>
+              <h3>Mobile participation in the same protocol</h3>
+              <p>Phones and small devices acting as readers, senders, carriers, and opportunistic relays.</p>
+            </article>
+            <article class="milestone-card future">
+              <span class="milestone-state">Later</span>
+              <h3>More transports, same envelope</h3>
+              <p>Bluetooth, Wi-Fi Direct, QR, LoRa, OpenWRT routers, and broader independent implementation interoperability.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section cta-section">
+        <div class="cta-panel">
+          <div>
+            <span class="eyebrow">Explore The Project</span>
+            <h2>Read the spec. Run the relay. Build the next layer.</h2>
+            <p>
+              Hermes Relay is designed to be auditable, portable, and implementable by independent developers across platforms, while giving the
+              end user a simple communication experience on top of a much more capable relay fabric.
+            </p>
+          </div>
+          <div class="cta-actions">
+            <a class="button button-primary" href="https://github.com/benjaminrathelot/Hermes-Relay/blob/main/docs/operator-quickstart.md">Operator Quickstart</a>
+            <a class="button button-secondary" href="https://github.com/benjaminrathelot/Hermes-Relay/blob/main/docs/emergency-relay-playbook.md">Emergency Playbook</a>
+            <a class="button button-secondary" href="https://github.com/benjaminrathelot/Hermes-Relay/blob/main/docs/python-wrapper.md">Desktop Layer</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>Hermes Relay</strong>
+        <p>Offline-first communication for damaged, hostile, and fragmented environments.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/benjaminrathelot/Hermes-Relay">Repository</a>
+        <a href="https://github.com/benjaminrathelot/Hermes-Relay/blob/main/LICENSE">License</a>
+        <a href="https://github.com/benjaminrathelot/Hermes-Relay/blob/main/docs/protocol-spec.md">Protocol Spec</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

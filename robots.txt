@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://benjaminrathelot.github.io/Hermes-Relay/sitemap.xml
